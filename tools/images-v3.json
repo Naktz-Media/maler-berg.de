@@ -1,0 +1,16 @@
+{
+  "baseModel": "seedream-5-5",
+  "mode": "2k",
+  "outDir": "assets/img-src",
+  "style": "Low-key photograph, deep navy-black background, one single soft light source, subject emerging from shadow, dark edges that fall off to near black, rich true colour in the lit area, crisp detail, full-frame camera, no text, no letters, no logos, no watermark, no faces",
+  "images": [
+    { "name": "d-messen", "width": 1536, "height": 1920, "prompt": "A handheld spectrophotometer colour measuring device pressed against a deep turquoise plaster wall, a single narrow spotlight from above-left lights the device and a small patch of wall, everything else falls into dark navy shadow" },
+    { "name": "d-eimer", "width": 1920, "height": 1920, "prompt": "Top-down view of an open paint tin filled with glossy magenta paint, a wooden stirring stick resting across it, lit by one soft lamp, the surrounding floor fades to black" },
+    { "name": "d-rolle", "width": 2160, "height": 1350, "prompt": "Paint roller mid-stroke laying a fresh band of turquoise paint across a dark navy wall, one raking light from the side showing the wet texture, rest of the wall in deep shadow" },
+    { "name": "d-altbau", "width": 2160, "height": 1215, "prompt": "Empty Cologne Gründerzeit Altbau room at dusk, tall double window with faint blue evening light, ornate stucco ceiling barely visible, one wall freshly painted deep teal catching the window light, the rest of the room dark and quiet, symmetrical, wide" },
+    { "name": "d-spachtel", "width": 1536, "height": 1920, "prompt": "Steel trowel smoothing dark blue Venetian lime plaster with a polished sheen, raking light from the left reveals the marbled texture, background falls into black" },
+    { "name": "d-koeln", "width": 2160, "height": 1215, "prompt": "Cologne Cathedral and the Hohenzollern Bridge across the Rhine at blue hour, the cathedral softly floodlit, sky deep navy, water dark with a few reflections, calm and quiet, wide view with the city low in the frame" },
+    { "name": "d-boden", "width": 2160, "height": 1350, "prompt": "Freshly coated smooth grey epoxy garage floor reflecting a single overhead lamp, edges of the room in darkness, clean and empty" },
+    { "name": "d-pinsel", "width": 1536, "height": 1920, "prompt": "A row of four clean paintbrushes of different widths hanging on a dark wall, one with a drop of magenta paint at its tip, single spotlight, deep shadows" }
+  ]
+}
