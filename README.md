@@ -3,7 +3,7 @@
 Neue Website für die Maler Berg GmbH, Malermeisterbetrieb in Köln-Zollstock (seit 1996).
 
 Statische Seite ohne Build-Schritt: `index.html`, `impressum.html`, `datenschutz.html`, alles weitere unter `assets/`.
-Schrift (Jost) und Bilder liegen lokal, es werden keine Drittanbieter geladen und keine Cookies gesetzt.
+Schrift (Boska) und Bilder liegen lokal, es werden keine Drittanbieter geladen und keine Cookies gesetzt.
 
 ## Lokal ansehen
 
