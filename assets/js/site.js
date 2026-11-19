@@ -1,118 +1,120 @@
 (() => {
+  const root = document.documentElement;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* Mobile menu */
-  const toggle = document.querySelector('.menu-toggle');
-  const nav = document.getElementById('nav');
-  if (toggle && nav) {
-    toggle.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', String(open));
-      toggle.textContent = open ? 'Schließen' : 'Menü';
+  /* Phone menu */
+  const top = document.querySelector('.top');
+  const menu = document.querySelector('.menu');
+  if (menu) {
+    menu.addEventListener('click', () => {
+      const open = top.classList.toggle('open');
+      menu.setAttribute('aria-expanded', String(open));
+      menu.textContent = open ? 'Schließen' : 'Menü';
     });
-    nav.addEventListener('click', (e) => {
-      if (e.target.closest('a') && nav.classList.contains('open')) toggle.click();
-    });
+    top.addEventListener('click', (e) => { if (e.target.closest('.top__links a, .top__cta') && top.classList.contains('open')) menu.click(); });
   }
 
-  /* Hero: the window opens to the edges as the page scrolls */
-  const hero = document.querySelector('.hero');
-  const pic = hero && hero.querySelector('.hero__pic');
-  const img = pic && pic.querySelector('img');
-  if (hero && pic && !reduce) {
-    let ticking = false;
-    const frame = () => {
-      ticking = false;
-      const vw = innerWidth, vh = innerHeight;
-      const phone = vw <= 760;
-      // start opening: portrait window, centred
-      const w0 = phone ? vw * 0.78 : Math.min(vw * 0.36, vh * 0.8 * 0.8);
-      const h0 = w0 * 1.25;
-      const top0 = phone ? vh * 0.3 : (vh - h0) / 2;
-      const p = Math.min(1, Math.max(0, -hero.getBoundingClientRect().top / (vh * (phone ? 0.7 : 1))));
-      const e = 1 - Math.pow(1 - p, 2);
-      const ix = ((vw - w0) / 2) * (1 - e);
-      const it = top0 * (1 - e);
-      const ib = (vh - top0 - h0) * (1 - e);
-      pic.style.clipPath = `inset(${it}px ${ix}px ${ib}px ${ix}px)`;
-      hero.style.setProperty('--p', p.toFixed(3));
-      // camera pulls back: the opening first frames the turquoise wall and the window
-      const k = phone ? 0 : 1 - e;
-      img.style.transform = `translateX(${(26 * k).toFixed(2)}vw) scale(${(1 + 0.6 * k).toFixed(3)})`;
-    };
-    const req = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
-    addEventListener('scroll', req, { passive: true });
-    addEventListener('resize', req);
-    frame();
-  }
-
-  /* Specials: pinned story, the active line steps down as markers pass */
-  const specials = document.querySelector('.specials');
-  if (specials) {
-    const items = specials.querySelectorAll('.specials__list li');
-    const panels = specials.querySelectorAll('.special');
-    const set = (i) => {
-      items.forEach((li) => li.classList.toggle('is-on', li.dataset.i === String(i)));
-      panels.forEach((p) => p.classList.toggle('is-on', p.dataset.i === String(i)));
-    };
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => { if (en.isIntersecting) set(en.target.dataset.i); });
-    }, { rootMargin: '-45% 0px -45% 0px' });
-    specials.querySelectorAll('.specials__markers i').forEach((m) => io.observe(m));
-    items.forEach((li) => {
-      li.tabIndex = 0;
-      li.addEventListener('click', () => set(li.dataset.i));
-      li.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); set(li.dataset.i); } });
-    });
-  }
-
-  /* Live: paint the wall */
-  const wall = document.querySelector('.room__wall');
-  const swatches = document.querySelectorAll('.swatch');
-  const picker = document.querySelector('.picker input');
-  const mail = document.getElementById('try-mail');
-  const paint = (colour, name) => {
-    if (!wall) return;
-    wall.setAttribute('fill', colour);
-    if (mail) {
-      const subject = `Anfrage Farbton ${name}`;
-      const body = `Guten Tag Herr Berg,\n\nich interessiere mich für einen Anstrich im Farbton „${name}“ (${colour}).\nOrt / Stadtteil: \nRaum / Fläche: \n\nViele Grüße`;
-      mail.href = `mailto:info@maler-berg.de?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    }
+  /* The live thing: paint the page with a chip */
+  const chips = document.querySelectorAll('.chips button');
+  const label = document.getElementById('chip-name');
+  const ask = document.getElementById('ask');
+  const setAsk = (name) => {
+    if (!ask) return;
+    const body = `Guten Tag Herr Berg,\n\nich interessiere mich für einen Anstrich, gern im Farbton „${name}“.\nOrt / Stadtteil: \nRaum / Fläche (ca. m²): \nWunschtermin: \n\nViele Grüße`;
+    ask.href = `mailto:info@maler-berg.de?subject=${encodeURIComponent('Angebotsanfrage – ' + name)}&body=${encodeURIComponent(body)}`;
   };
-  swatches.forEach((b) => b.addEventListener('click', () => {
-    swatches.forEach((s) => s.setAttribute('aria-pressed', String(s === b)));
-    paint(b.dataset.c, b.querySelector('span:last-child').firstChild.textContent.trim());
-  }));
-  if (picker) picker.addEventListener('input', () => {
-    swatches.forEach((s) => s.setAttribute('aria-pressed', 'false'));
-    paint(picker.value, `eigener Ton ${picker.value}`);
+  const paint = (btn, save) => {
+    chips.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    root.style.setProperty('--chip', btn.dataset.c);
+    root.style.setProperty('--on-chip', btn.dataset.o);
+    const name = btn.getAttribute('aria-label');
+    if (label) label.textContent = name;
+    setAsk(name);
+    if (save) { try { localStorage.setItem('mb-chip', JSON.stringify({ c: btn.dataset.c, o: btn.dataset.o })); } catch (e) { /* storage off */ } }
+  };
+  chips.forEach((b) => b.addEventListener('click', () => paint(b, true)));
+  try {
+    const saved = JSON.parse(localStorage.getItem('mb-chip') || 'null');
+    const match = saved && [...chips].find((b) => b.dataset.c === saved.c);
+    paint(match || chips[0], false);
+  } catch (e) { if (chips[0]) paint(chips[0], false); }
+
+  /* Accordion of stages */
+  const stages = document.querySelectorAll('.stage');
+  stages.forEach((s) => {
+    const btn = s.querySelector('.stage__name');
+    btn.addEventListener('click', () => {
+      stages.forEach((o) => {
+        const on = o === s;
+        o.classList.toggle('is-open', on);
+        o.querySelector('.stage__name').setAttribute('aria-expanded', String(on));
+      });
+    });
   });
 
-  /* Entrances: heading, then text, then picture. Checked on every scroll,
-     so a jump (anchor link, restored position) reveals everything above it too. */
-  const rise = [...document.querySelectorAll('.rise')];
-  const drift = [...document.querySelectorAll('[data-drift]')];
-  if (reduce) {
-    rise.forEach((el) => el.classList.add('in'));
-  } else {
-    let pending = false;
-    const check = () => {
-      pending = false;
-      const vh = innerHeight;
-      for (let i = rise.length - 1; i >= 0; i--) {
-        if (rise[i].getBoundingClientRect().top < vh * 0.92) { rise[i].classList.add('in'); rise.splice(i, 1); }
-      }
-      drift.forEach((el) => {
-        const r = el.parentElement.getBoundingClientRect();
-        if (r.bottom < 0 || r.top > vh) return;
-        const t = (r.top + r.height / 2 - vh / 2) / vh; // -1 .. 1 around the centre
-        el.style.transform = `translateY(${(t * -4).toFixed(2)}%) scale(1.1)`;
-      });
-    };
-    const req = () => { if (!pending) { pending = true; requestAnimationFrame(check); } };
-    addEventListener('scroll', req, { passive: true });
-    addEventListener('resize', req);
-    check();
-  }
+  /* One photograph cut across the board: each piece shows its own part of it */
+  const cut = document.querySelector('.cut');
+  const fitPieces = () => {
+    if (!cut) return;
+    const box = cut.getBoundingClientRect();
+    const cs = getComputedStyle(cut);
+    const pl = parseFloat(cs.paddingLeft), pt = parseFloat(cs.paddingTop), pr = parseFloat(cs.paddingRight);
+    const w = box.width - pl - pr, h = box.height - pt;
+    cut.querySelectorAll('.piece i').forEach((i) => {
+      const r = i.parentElement.getBoundingClientRect();
+      i.style.backgroundSize = `${w}px ${h}px`;
+      i.style.backgroundPosition = `${-(r.left - box.left - pl)}px ${-(r.top - box.top - pt)}px`;
+    });
+  };
+  fitPieces();
+  addEventListener('resize', fitPieces);
+  addEventListener('load', fitPieces);
+
+  /* Services deck: each scroll step slides the next card in and folds the earlier ones into spines */
+  const deck = document.querySelector('.deck');
+  const cards = deck ? [...deck.querySelectorAll('.card')] : [];
+  let forced = null;
+  const layoutDeck = (step) => {
+    const band = deck.querySelector('.deck__band');
+    const W = band.clientWidth, n = cards.length;
+    const spine = Math.min(120, W * 0.09);
+    const cw = W - (n - 1) * spine;                       // the open card fills what the spines leave
+    cards.forEach((c, i) => {
+      const x = i <= step ? i * spine : W - (n - i) * spine; // folded at the left, waiting at the right
+      c.style.setProperty('--open-px', `${cw}px`);
+      c.style.setProperty('--cw', `${i === step ? cw : spine}px`);   // spines show only their first letters
+      c.style.setProperty('--tx', `${x}px`);
+      c.style.zIndex = String(i === step ? n + 1 : i < step ? i : n - i);
+      c.setAttribute('aria-current', i === step ? 'true' : 'false');
+    });
+  };
+  const deckStep = () => {
+    if (!deck || innerWidth <= 760 || reduce) return;
+    const r = deck.getBoundingClientRect();
+    const span = deck.offsetHeight - innerHeight;
+    const p = Math.min(1, Math.max(0, -r.top / span));
+    const step = forced ?? Math.min(cards.length - 1, Math.floor(p * cards.length));
+    layoutDeck(step);
+  };
+  cards.forEach((c, i) => c.addEventListener('click', (e) => { if (e.target.closest('a')) return; forced = i; deckStep(); }));
+
+  /* Entrances, shutters, and the deck — one scroll handler */
+  const ups = [...document.querySelectorAll('.up, .shutter')];
+  let pending = false, lastY = scrollY;
+  const tick = () => {
+    pending = false;
+    if (Math.abs(scrollY - lastY) > 40) forced = null;
+    lastY = scrollY;
+    const vh = innerHeight;
+    for (let i = ups.length - 1; i >= 0; i--) {
+      const el = ups[i];
+      if (el.getBoundingClientRect().top < vh * 0.92) { el.classList.add(el.classList.contains('shutter') ? 'is-in' : 'in'); ups.splice(i, 1); }
+    }
+    deckStep();
+  };
+  const req = () => { if (!pending) { pending = true; requestAnimationFrame(tick); } };
+  addEventListener('scroll', req, { passive: true });
+  addEventListener('resize', req);
+  if (reduce) ups.forEach((el) => el.classList.add('in', 'is-in'));
+  tick();
 })();
