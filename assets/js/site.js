@@ -33,7 +33,7 @@
   }));
 
   // Reveal on scroll
-  const els = document.querySelectorAll('.services__head, .card, .process__left, .steps, .area, .crew h2, .crew__row, .why__grid, .cta, .faq__list, .foot');
+  const els = document.querySelectorAll('.services__head, .card, .reviews__head, .quotes, .certs__head, .docs, .badges, .process__left, .steps, .area, .crew h2, .crew__row, .why__grid, .cta, .faq__list, .foot');
   if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const io = new IntersectionObserver((list) => list.forEach((en) => {
     if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); setTimeout(() => en.target.classList.remove('rise', 'in'), 1000); }

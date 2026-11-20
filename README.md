@@ -23,5 +23,5 @@ Das Skript liest `LETZAI_API_KEY` und `LETZAI_ORGANIZATION_ID` aus `.env` (nicht
 
 - Echte Projektfotos statt der Beispielmotive
 - Vollständige Datenschutzerklärung (inkl. Hosting)
-- Bewertungszahlen (250 Bewertungen, 9,4 bei trustlocal, Top Score 2024) aktuell halten
+- Bewertungszahlen (500 bei qih, 9,4 bei trustlocal, Top Score 2023 & 2024) und die zitierten Google-Bewertungen aktuell halten
 - Farbnamen in der Farbvorschau sind Beispiele, keine Brillux-Farbcodes
