@@ -9,6 +9,20 @@
     addEventListener('scroll', onScroll, { passive: true }); onScroll();
   }
 
+  // Phone menu: the button opens the pages as a list
+  const burger = $('.burger');
+  if (top && burger) {
+    const setOpen = (on) => {
+      top.classList.toggle('is-open', on);
+      burger.setAttribute('aria-expanded', on);
+      burger.setAttribute('aria-label', on ? 'Menü schließen' : 'Menü öffnen');
+    };
+    burger.addEventListener('click', () => setOpen(!top.classList.contains('is-open')));
+    $$('.top__nav a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+    matchMedia('(min-width: 721px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+  }
+
   // Enquiry form: build a mailto with the fields filled in
   const form = $('#ask');
   if (form) form.addEventListener('submit', (e) => {

@@ -26,10 +26,11 @@ def header(active):
     links = '\n    '.join('<a href="' + h + '"' + (cur if h == active else '') + '>' + t + '</a>' for h, t in NAV)
     return f'''<header class="top">
   <a class="logo" href="index.html"><svg><use href="#mark"/></svg><span>MALER<br>BERG</span></a>
-  <nav class="top__nav" aria-label="Hauptmenü">
+  <nav class="top__nav" id="menu" aria-label="Hauptmenü">
     {links}
   </nav>
   <a class="btn btn--sm" href="tel:+49221361451">0221 36 14 51</a>
+  <button class="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Menü öffnen"><span></span><span></span></button>
 </header>'''
 
 FOOTER = '''<footer class="foot">

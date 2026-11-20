@@ -417,9 +417,6 @@ svg { width: 1em; height: 1em; }
   .quote--wide { grid-column: 1 / -1; }
 }
 @media (max-width: 720px) {
-  .top { flex-wrap: wrap; row-gap: 10px; padding-bottom: 10px; }
-  .top__nav { display: flex; order: 3; width: 100%; gap: 20px; overflow-x: auto; scrollbar-width: none; margin: 0; padding-bottom: 4px; font-size: 14px; white-space: nowrap; }
-  .top__nav::-webkit-scrollbar { display: none; }
   .refs__grid, .press__grid { grid-template-columns: 1fr; }
   .docs--all { grid-template-columns: 1fr 1fr; gap: 14px; }
   .doc { height: 210px; padding: 14px; }
@@ -428,4 +425,24 @@ svg { width: 1em; height: 1em; }
   .lb figure { padding: 64px 8px 16px; }
   .lb__prev, .lb__next { top: auto; bottom: 16px; transform: none; }
   .lb img { max-height: calc(100vh - 200px); }
+}
+
+/* Phone menu: a button that opens the pages as a list */
+.burger { display: none; }
+@media (max-width: 720px) {
+  .top .btn { margin-left: auto; }
+  .burger { display: grid; place-content: center; gap: 6px; width: 46px; height: 46px; flex: 0 0 46px; padding: 0; border: 1.5px solid var(--line); border-radius: 50%; background: #fff; cursor: pointer; }
+  .burger span { display: block; width: 18px; height: 2px; border-radius: 2px; background: var(--ink); transition: transform .3s var(--ease); }
+  .top.is-open .burger { background: var(--ink); border-color: var(--ink); }
+  .top.is-open .burger span { background: #fff; }
+  .top.is-open .burger span:first-child { transform: translateY(4px) rotate(45deg); }
+  .top.is-open .burger span:last-child { transform: translateY(-4px) rotate(-45deg); }
+  .top.is-open { background: #fff; border-color: var(--line); }
+  .top__nav { display: none; position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; gap: 0; margin: 0; padding: 8px var(--m) 24px; background: #fff; border-bottom: 1px solid var(--line); box-shadow: 0 24px 48px rgba(17,18,22,.12); max-height: calc(100vh - 74px); overflow-y: auto; }
+  .top.is-open .top__nav { display: flex; }
+  .top__nav a { display: flex; align-items: center; justify-content: space-between; padding: 18px 4px; border-bottom: 1px solid var(--line); font-size: 22px; font-weight: 700; letter-spacing: -.02em; }
+  .top__nav a:last-child { border-bottom: 0; }
+  .top__nav a::after { content: "→"; position: static; width: auto; height: auto; background: none; color: var(--hot); font-size: 20px; transition: transform .2s var(--ease); }
+  .top__nav a:hover::after, .top__nav a[aria-current="page"]::after { transform: translateX(4px); }
+  .top__nav a[aria-current="page"] { color: var(--hot); }
 }
