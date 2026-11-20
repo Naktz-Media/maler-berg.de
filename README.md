@@ -2,7 +2,9 @@
 
 Neue Website für die Maler Berg GmbH, Malermeisterbetrieb in Köln-Zollstock (seit 1996).
 
-Statische Seite ohne Build-Schritt: `index.html`, `impressum.html`, `datenschutz.html`, alles weitere unter `assets/`.
+Statische Seite ohne Build-Schritt: `index.html`, `leistungen.html`, `referenzen.html`, `ueber-uns.html`, `impressum.html`, `datenschutz.html`, alles weitere unter `assets/`.
+
+Inhalte, Projektfotos, Zertifikate, Presse und Broschüre stammen von der alten maler-berg.de (Stand 20.11.2026). `referenzen.html`, `leistungen.html`, `ueber-uns.html` und die Zertifikate-Galerie auf der Startseite erzeugt `python tools/build_pages.py` aus `tools/projects.json`; danach nichts in diesen Seiten von Hand ändern, sondern im Skript.
 Schrift (DM Sans) und Bilder liegen lokal, es werden keine Drittanbieter geladen und keine Cookies gesetzt.
 
 ## Lokal ansehen
